@@ -17,11 +17,10 @@ export const login = (formData) => API.post("/auth/login", formData);
 export const getUserProfile = () => API.get("/auth/user");
 
 // Organization endpoints
-export const createInvitation = (email, role) => 
+export const createInvitation = (email, role) =>
   API.post("/auth/invite", { email, role });
-export const getOrganizationMembers = () => 
-  API.get("/auth/members");
-export const updateUserRole = (userId, role) => 
+export const getOrganizationMembers = () => API.get("/auth/members");
+export const updateUserRole = (userId, role) =>
   API.patch(`/auth/users/${userId}/role`, { role });
-export const removeUserFromOrg = (userId) => 
+export const removeUserFromOrg = (userId) =>
   API.delete(`/auth/users/${userId}`);

@@ -5,8 +5,8 @@ const checkRole = (roles) => {
     }
 
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ 
-        msg: "You don't have permission to perform this action" 
+      return res.status(403).json({
+        msg: "You don't have permission to perform this action",
       });
     }
 

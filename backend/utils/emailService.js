@@ -10,10 +10,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendInvitationEmail = async (recipientEmail, inviteCode, organizationName, inviterName) => {
+const sendInvitationEmail = async (
+  recipientEmail,
+  inviteCode,
+  organizationName,
+  inviterName
+) => {
   try {
     const inviteUrl = `${process.env.FRONTEND_URL}/register?inviteCode=${inviteCode}`;
-    
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: recipientEmail,

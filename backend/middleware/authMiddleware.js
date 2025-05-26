@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Fetch complete user data including organization
     const user = await User.findById(decoded.userId)
       .select("-password")

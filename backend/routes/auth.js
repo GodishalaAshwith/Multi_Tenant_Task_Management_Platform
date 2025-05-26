@@ -13,8 +13,15 @@ const router = express.Router();
 // Register User with Organization
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, organizationType, organizationName, inviteCode } = req.body;
-    
+    const {
+      name,
+      email,
+      password,
+      organizationType,
+      organizationName,
+      inviteCode,
+    } = req.body;
+
     // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -30,15 +37,17 @@ router.post("/register", async (req, res) => {
 
     if (inviteCode) {
       // Join existing organization via invite
-      const invitation = await Invitation.findOne({ 
+      const invitation = await Invitation.findOne({
         inviteCode,
         email,
         status: "pending",
-        expiresAt: { $gt: new Date() }
+        expiresAt: { $gt: new Date() },
       });
 
       if (!invitation) {
-        return res.status(400).json({ message: "Invalid or expired invite code" });
+        return res
+          .status(400)
+          .json({ message: "Invalid or expired invite code" });
       }
 
       organization = invitation.organization;
@@ -52,12 +61,13 @@ router.post("/register", async (req, res) => {
       organization = new Organization({
         name: organizationName,
         inviteCode: crypto.randomBytes(6).toString("hex"),
-        createdBy: null // Will update after user creation
+        createdBy: null, // Will update after user creation
       });
       role = "admin";
     } else {
-      return res.status(400).json({ 
-        message: "Must either provide an invite code or create a new organization" 
+      return res.status(400).json({
+        message:
+          "Must either provide an invite code or create a new organization",
       });
     }
 
@@ -67,7 +77,7 @@ router.post("/register", async (req, res) => {
       email,
       password: hashedPassword,
       organization: organization._id,
-      role
+      role,
     });
 
     // If creating new org, update the createdBy field
@@ -88,10 +98,12 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    
-    const user = await User.findOne({ email })
-      .populate("organization", "name inviteCode");
-      
+
+    const user = await User.findOne({ email }).populate(
+      "organization",
+      "name inviteCode"
+    );
+
     if (!user || !user.isActive) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -102,10 +114,10 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { 
+      {
         userId: user._id,
         role: user.role,
-        organizationId: user.organization._id
+        organizationId: user.organization._id,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
@@ -120,9 +132,9 @@ router.post("/login", async (req, res) => {
         role: user.role,
         organization: {
           id: user.organization._id,
-          name: user.organization.name
-        }
-      }
+          name: user.organization.name,
+        },
+      },
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -135,7 +147,7 @@ router.get("/user", authMiddleware, async (req, res) => {
     const user = await User.findById(req.user._id)
       .select("-password")
       .populate("organization", "name inviteCode");
-      
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -149,29 +161,30 @@ router.get("/user", authMiddleware, async (req, res) => {
 const { sendInvitationEmail } = require("../utils/emailService");
 
 // Create Invitation (Protected - Admin/Manager only)
-router.post("/invite", 
-  authMiddleware, 
-  checkRole(["admin", "manager"]), 
+router.post(
+  "/invite",
+  authMiddleware,
+  checkRole(["admin", "manager"]),
   async (req, res) => {
     try {
       const { email, role = "member" } = req.body;
 
       // Validate role assignment
       if (req.user.role === "manager" && role === "admin") {
-        return res.status(403).json({ 
-          message: "Managers cannot assign admin roles" 
+        return res.status(403).json({
+          message: "Managers cannot assign admin roles",
         });
       }
 
       // Check if user already exists in organization
-      const existingUser = await User.findOne({ 
-        email, 
-        organization: req.organizationId 
+      const existingUser = await User.findOne({
+        email,
+        organization: req.organizationId,
       });
-      
+
       if (existingUser) {
-        return res.status(400).json({ 
-          message: "User already exists in this organization" 
+        return res.status(400).json({
+          message: "User already exists in this organization",
         });
       }
 
@@ -180,12 +193,12 @@ router.post("/invite",
         email,
         organization: req.organizationId,
         status: "pending",
-        expiresAt: { $gt: new Date() }
+        expiresAt: { $gt: new Date() },
       });
 
       if (existingInvite) {
-        return res.status(400).json({ 
-          message: "An active invitation already exists for this email" 
+        return res.status(400).json({
+          message: "An active invitation already exists for this email",
         });
       }
 
@@ -196,7 +209,7 @@ router.post("/invite",
         email,
         role,
         inviteCode,
-        invitedBy: req.user._id
+        invitedBy: req.user._id,
       });
 
       await invitation.save();
@@ -214,34 +227,34 @@ router.post("/invite",
         console.error("Failed to send invitation email:", emailError);
       }
 
-      res.status(201).json({ 
+      res.status(201).json({
         message: "Invitation sent successfully",
-        inviteCode
+        inviteCode,
       });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-});
+  }
+);
 
 // Get Organization Members (Protected)
-router.get("/members", 
-  authMiddleware,
-  async (req, res) => {
-    try {
-      const members = await User.find({ 
-        organization: req.organizationId 
-      })
+router.get("/members", authMiddleware, async (req, res) => {
+  try {
+    const members = await User.find({
+      organization: req.organizationId,
+    })
       .select("-password")
       .sort({ role: 1, name: 1 });
 
-      res.json(members);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
+    res.json(members);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Update User Role (Protected - Admin only)
-router.patch("/users/:userId/role",
+router.patch(
+  "/users/:userId/role",
   authMiddleware,
   checkRole(["admin"]),
   async (req, res) => {
@@ -251,14 +264,14 @@ router.patch("/users/:userId/role",
 
       // Prevent self-role change
       if (userId === req.user._id.toString()) {
-        return res.status(400).json({ 
-          message: "Cannot change your own role" 
+        return res.status(400).json({
+          message: "Cannot change your own role",
         });
       }
 
-      const user = await User.findOne({ 
+      const user = await User.findOne({
         _id: userId,
-        organization: req.organizationId
+        organization: req.organizationId,
       });
 
       if (!user) {
@@ -272,10 +285,12 @@ router.patch("/users/:userId/role",
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-});
+  }
+);
 
 // Remove User from Organization (Protected - Admin only)
-router.delete("/users/:userId",
+router.delete(
+  "/users/:userId",
   authMiddleware,
   checkRole(["admin"]),
   async (req, res) => {
@@ -284,14 +299,14 @@ router.delete("/users/:userId",
 
       // Prevent self-removal
       if (userId === req.user._id.toString()) {
-        return res.status(400).json({ 
-          message: "Cannot remove yourself from the organization" 
+        return res.status(400).json({
+          message: "Cannot remove yourself from the organization",
         });
       }
 
-      const user = await User.findOne({ 
+      const user = await User.findOne({
         _id: userId,
-        organization: req.organizationId
+        organization: req.organizationId,
       });
 
       if (!user) {
@@ -305,6 +320,7 @@ router.delete("/users/:userId",
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-});
+  }
+);
 
 module.exports = router;

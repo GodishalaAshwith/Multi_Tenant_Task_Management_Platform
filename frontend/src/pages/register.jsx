@@ -10,12 +10,12 @@ const Register = () => {
 
     // Check for invite code in URL
     const params = new URLSearchParams(window.location.search);
-    const inviteCode = params.get('inviteCode');
+    const inviteCode = params.get("inviteCode");
     if (inviteCode) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        organizationType: 'join',
-        inviteCode
+        organizationType: "join",
+        inviteCode,
       }));
     }
   }, []);
@@ -27,7 +27,7 @@ const Register = () => {
     password: "",
     organizationType: "create", // 'create' or 'join'
     organizationName: "",
-    inviteCode: ""
+    inviteCode: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -35,14 +35,14 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
       // Reset org-specific fields when switching types
       ...(name === "organizationType" && {
         organizationName: value === "create" ? "" : prev.organizationName,
-        inviteCode: value === "join" ? "" : prev.inviteCode
-      })
+        inviteCode: value === "join" ? "" : prev.inviteCode,
+      }),
     }));
   };
 

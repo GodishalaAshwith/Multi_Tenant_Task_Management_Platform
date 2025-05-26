@@ -5,21 +5,21 @@ const UserSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    organization: { 
-      type: mongoose.Schema.Types.ObjectId, 
+    organization: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Organization",
-      required: true 
+      required: true,
     },
-    role: { 
-      type: String, 
+    role: {
+      type: String,
       enum: ["admin", "manager", "member"],
       required: true,
-      default: "member"
+      default: "member",
     },
     isActive: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   { timestamps: true }
 );
