@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const Register = () => {
   useEffect(() => {
@@ -74,30 +73,30 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-gray-50 font-sans custom-scrollbar flex items-center justify-center min-h-screen p-6">
+    <div className="bg-gray-100 font-sans custom-scrollbar flex items-center justify-center min-h-screen p-6">
       <style>
         {`
           ::-webkit-scrollbar {
             width: 8px;
           }
           ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #4f46e5, #3b82f6);
+            background: linear-gradient(to bottom, #1f2937, #111827);
             border-radius: 10px;
           }
         `}
       </style>
       <div
-        className="bg-white p-10 rounded-2xl shadow-xl max-w-md w-full text-center"
+        className="bg-white p-10 rounded-2xl shadow-xl max-w-md w-full text-center border border-gray-200"
         data-aos="fade-up"
       >
-        <h2 className="text-4xl font-bold text-indigo-700 mb-6">
+        <h2 className="text-4xl font-bold text-gray-900 mb-6">
           Create Account
         </h2>
-        <p className="text-gray-600 mb-6">
-          Join us and start your learning journey!
+        <p className="text-gray-700 mb-6">
+          Join us and start managing your tasks!
         </p>
 
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {error && <p className="text-red-600 mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
@@ -106,7 +105,7 @@ const Register = () => {
             placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
             required
           />
           <input
@@ -115,7 +114,7 @@ const Register = () => {
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
             required
           />
           <input
@@ -124,7 +123,7 @@ const Register = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
             required
           />
 
@@ -137,9 +136,9 @@ const Register = () => {
                   value="create"
                   checked={formData.organizationType === "create"}
                   onChange={handleChange}
-                  className="form-radio text-indigo-600"
+                  className="form-radio text-gray-600"
                 />
-                <span>Create Organization</span>
+                <span className="text-gray-700">Create Organization</span>
               </label>
               <label className="flex items-center space-x-2">
                 <input
@@ -148,9 +147,9 @@ const Register = () => {
                   value="join"
                   checked={formData.organizationType === "join"}
                   onChange={handleChange}
-                  className="form-radio text-indigo-600"
+                  className="form-radio text-gray-600"
                 />
-                <span>Join Organization</span>
+                <span className="text-gray-700">Join Organization</span>
               </label>
             </div>
 
@@ -161,7 +160,7 @@ const Register = () => {
                 placeholder="Organization Name"
                 value={formData.organizationName}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                 required
               />
             ) : (
@@ -171,7 +170,7 @@ const Register = () => {
                 placeholder="Invitation Code"
                 value={formData.inviteCode}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                 required
               />
             )}
@@ -179,7 +178,7 @@ const Register = () => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-md font-semibold hover:bg-indigo-700 transition-all flex items-center justify-center"
+            className="w-full bg-gray-800 text-white py-3 rounded-md font-semibold hover:bg-gray-700 transition-all flex items-center justify-center"
             disabled={loading}
           >
             {loading ? (
@@ -192,7 +191,10 @@ const Register = () => {
 
         <p className="mt-4 text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-indigo-600 hover:underline">
+          <a
+            href="/login"
+            className="text-gray-800 hover:text-gray-600 hover:underline"
+          >
             Login
           </a>
         </p>

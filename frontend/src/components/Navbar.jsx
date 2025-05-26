@@ -20,40 +20,34 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-indigo-600 text-white shadow-lg p-4">
+    <nav className="bg-gray-900 text-white shadow-lg p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link
           to="/"
-          className="text-3xl font-bold tracking-wide hover:text-indigo-300 transition duration-300"
+          className="text-3xl font-bold tracking-wide text-white hover:text-gray-200 transition duration-300"
         >
-          CourseCred
+          TaskHub
         </Link>
 
         <div className="space-x-6 flex items-center">
           <Link
             to="/"
-            className="hover:bg-indigo-500 px-4 py-2 rounded-lg transition duration-300"
+            className="text-gray-100 hover:bg-gray-700 px-4 py-2 rounded-lg transition duration-300"
           >
             Home
-          </Link>
-          <Link
-            to="/contactus"
-            className="hover:bg-indigo-500 px-4 py-2 rounded-lg transition duration-300"
-          >
-            Contact
           </Link>
 
           {user ? (
             <>
               <Link
                 to="/dashboard"
-                className="hover:bg-indigo-500 px-4 py-2 rounded-lg transition duration-300"
+                className="text-white bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition duration-300"
               >
                 Dashboard
               </Link>
               <button
                 onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-semibold transition duration-300"
+                className="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold transition duration-300"
               >
                 Logout
               </button>
@@ -62,13 +56,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="hover:bg-indigo-500 px-4 py-2 rounded-lg transition duration-300"
+                className="text-gray-100 hover:bg-gray-700 px-4 py-2 rounded-lg transition duration-300"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="hover:bg-indigo-500 px-4 py-2 rounded-lg transition duration-300"
+                className="text-white bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition duration-300"
               >
                 Register
               </Link>

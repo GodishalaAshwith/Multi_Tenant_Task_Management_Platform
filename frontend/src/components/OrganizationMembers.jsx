@@ -78,8 +78,10 @@ const OrganizationMembers = () => {
       </h2>
 
       {(isAdmin || isManager) && (
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h3 className="text-lg font-semibold mb-4">Invite New Member</h3>
+        <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            Invite New Member
+          </h3>
           <form onSubmit={handleInvite} className="space-y-4">
             <div className="flex space-x-4">
               <input
@@ -89,7 +91,7 @@ const OrganizationMembers = () => {
                   setInvitation({ ...invitation, email: e.target.value })
                 }
                 placeholder="Email Address"
-                className="flex-1 px-4 py-2 border rounded-md"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                 required
               />
               <select
@@ -97,7 +99,7 @@ const OrganizationMembers = () => {
                 onChange={(e) =>
                   setInvitation({ ...invitation, role: e.target.value })
                 }
-                className="px-4 py-2 border rounded-md"
+                className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                 disabled={!isAdmin}
               >
                 <option value="member">Member</option>
@@ -107,7 +109,7 @@ const OrganizationMembers = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                className="px-6 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-all disabled:bg-gray-400"
               >
                 {loading ? "Sending..." : "Invite"}
               </button>
@@ -119,21 +121,21 @@ const OrganizationMembers = () => {
       {error && <div className="text-red-600 mb-4">{error}</div>}
       {success && <div className="text-green-600 mb-4">{success}</div>}
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+          <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                 Role
               </th>
               {isAdmin && (
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   Actions
                 </th>
               )}
@@ -141,9 +143,13 @@ const OrganizationMembers = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {members.map((member) => (
-              <tr key={member._id}>
-                <td className="px-6 py-4 whitespace-nowrap">{member.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{member.email}</td>
+              <tr key={member._id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                  {member.name}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                  {member.email}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {isAdmin && member._id !== currentUser?.id ? (
                     <select
@@ -151,14 +157,16 @@ const OrganizationMembers = () => {
                       onChange={(e) =>
                         handleRoleUpdate(member._id, e.target.value)
                       }
-                      className="px-2 py-1 border rounded"
+                      className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                     >
                       <option value="member">Member</option>
                       <option value="manager">Manager</option>
                       <option value="admin">Admin</option>
                     </select>
                   ) : (
-                    <span className="capitalize">{member.role}</span>
+                    <span className="capitalize text-gray-800">
+                      {member.role}
+                    </span>
                   )}
                 </td>
                 {isAdmin && (
@@ -166,7 +174,7 @@ const OrganizationMembers = () => {
                     {member._id !== currentUser?.id && (
                       <button
                         onClick={() => handleRemoveMember(member._id)}
-                        className="text-red-600 hover:text-red-900"
+                        className="text-red-600 hover:text-red-800"
                       >
                         Remove
                       </button>

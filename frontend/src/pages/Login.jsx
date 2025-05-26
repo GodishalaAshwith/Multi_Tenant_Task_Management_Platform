@@ -51,23 +51,23 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gray-50 font-sans custom-scrollbar flex items-center justify-center h-screen">
+    <div className="bg-gray-100 font-sans custom-scrollbar flex items-center justify-center h-screen">
       <style>
         {`
           ::-webkit-scrollbar {
             width: 8px;
           }
           ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #4f46e5, #3b82f6);
+            background: linear-gradient(to bottom, #1f2937, #111827);
             border-radius: 10px;
           }
         `}
       </style>
       <div
-        className="bg-white p-10 rounded-xl shadow-2xl max-w-md w-full text-center"
+        className="bg-white p-10 rounded-xl shadow-xl max-w-md w-full text-center border border-gray-200"
         data-aos="fade-up"
       >
-        <h2 className="text-4xl font-bold text-indigo-700 mb-6">Login</h2>
+        <h2 className="text-4xl font-bold text-gray-900 mb-6">Welcome Back</h2>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
             type="email"
@@ -75,7 +75,7 @@ const Login = () => {
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
             required
           />
           <input
@@ -84,19 +84,19 @@ const Login = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
             required
           />
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-md font-semibold hover:bg-indigo-700 transition-all"
+            className="w-full bg-gray-800 text-white py-3 rounded-md font-semibold hover:bg-gray-700 transition-all"
           >
             Login
           </button>
         </form>
         <p className="mt-4 text-gray-600">
           Don't have an account?{" "}
-          <a href="/register" className="text-indigo-600 hover:underline">
+          <a href="/register" className="text-gray-800 hover:text-gray-600 hover:underline">
             Sign Up
           </a>
         </p>
