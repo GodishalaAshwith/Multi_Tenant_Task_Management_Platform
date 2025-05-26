@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { updateTask, deleteTask } from "../utils/api";
+import TaskStatusSelect from "./TaskStatusSelect";
 
 const TaskList = ({ tasks, onTasksChange }) => {
   const [editingTask, setEditingTask] = useState(null);
@@ -71,6 +72,10 @@ const TaskList = ({ tasks, onTasksChange }) => {
     });
   };
 
+  const canEditTaskStatus = (task) => {
+    return task.assignedTo._id === user?.id || isAdminOrManager;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
       <div className="overflow-x-auto">
@@ -120,33 +125,14 @@ const TaskList = ({ tasks, onTasksChange }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {task.assignedTo._id === user?.id || isAdminOrManager ? (
-                    <select
-                      value={task.status}
-                      onChange={(e) =>
-                        handleStatusChange(task._id, e.target.value)
-                      }
-                      className={`text-sm rounded-full px-3 py-1 ${getStatusColor(
-                        task.status
-                      )}`}
-                      disabled={task.status === "Expired"}
-                    >
-                      <option value="Todo">Todo</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Expired" disabled>
-                        Expired
-                      </option>
-                    </select>
-                  ) : (
-                    <span
-                      className={`text-sm rounded-full px-3 py-1 ${getStatusColor(
-                        task.status
-                      )}`}
-                    >
-                      {task.status}
-                    </span>
-                  )}
+                  <TaskStatusSelect
+                    status={task.status}
+                    onStatusChange={(newStatus) =>
+                      handleStatusChange(task._id, newStatus)
+                    }
+                    isExpired={task.status === "Expired"}
+                    canEdit={canEditTaskStatus(task)}
+                  />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
