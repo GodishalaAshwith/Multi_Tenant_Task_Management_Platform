@@ -28,6 +28,108 @@ A full-stack task management platform with multi-tenant support, built with Reac
 - Nginx (for reverse proxy)
 - SSL Certificate (for HTTPS)
 
+### Target Computer Setup (Docker)
+
+#### Windows Setup
+
+1. Install Docker Desktop for Windows from [Docker Hub](https://www.docker.com/products/docker-desktop)
+2. Extract the project archive (project*export*\*.zip)
+3. Open PowerShell and navigate to the project directory
+4. Set up the environment:
+
+   ```powershell
+   # Copy environment example file
+   Copy-Item .env.example .env
+
+   # Edit the environment file with your values
+   notepad .env
+   ```
+
+5. Import and use the management module:
+
+   ```powershell
+   # Import management module
+   Import-Module .\docker-utils.psm1
+
+   # Start all services
+   Start-Services
+
+   # Check services status
+   Get-ServicesStatus
+
+   # View service logs
+   Get-ServiceLogs -Service frontend
+   Get-ServiceLogs -Service backend
+   ```
+
+#### Linux Setup
+
+1. Install Docker and Docker Compose:
+
+   ```bash
+   # Install Docker
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sudo sh get-docker.sh
+
+   # Add your user to docker group
+   sudo usermod -aG docker $USER
+
+   # Log out and log back in for changes to take effect
+   ```
+
+2. Extract the project archive and set up:
+
+   ```bash
+   # Extract archive
+   unzip project_export_*.zip -d task-platform
+   cd task-platform
+
+   # Set up environment
+   cp .env.example .env
+   nano .env
+   ```
+
+3. Start the services:
+   ```bash
+   # Start application and monitoring
+   docker compose up -d
+   docker compose -f docker-compose.monitoring.yml up -d
+   ```
+
+#### Accessing the Application
+
+After successful setup, access the following URLs:
+
+- Frontend Application: http://localhost
+- Backend API: http://localhost:5000
+- Grafana Dashboard: http://localhost:3000 (default login: admin/admin)
+- Prometheus Metrics: http://localhost:9090
+
+#### Troubleshooting Docker Setup
+
+1. If containers fail to start:
+
+   ```powershell
+   # Check container logs
+   Get-ServiceLogs -Service backend
+   Get-ServiceLogs -Service mongodb
+
+   # Restart services
+   Stop-Services
+   Start-Services
+   ```
+
+2. If ports are already in use:
+
+   - Edit docker-compose.yml to change the port mappings
+   - Restart the services
+
+3. Common issues:
+   - Ensure Docker Desktop is running (Windows)
+   - Check if required ports (80, 5000, 3000, 9090) are available
+   - Verify environment variables in .env file
+   - Ensure sufficient disk space for containers and volumes
+
 ## Server Setup
 
 ### 1. Base Server Configuration
