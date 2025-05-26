@@ -323,4 +323,42 @@ router.delete(
   }
 );
 
+// Update Organization Settings (Protected - Admin only)
+router.patch(
+  "/organization",
+  authMiddleware,
+  checkRole(["admin"]),
+  async (req, res) => {
+    try {
+      const { name, theme } = req.body;
+
+      const organization = await Organization.findById(req.organizationId);
+      if (!organization) {
+        return res.status(404).json({ message: "Organization not found" });
+      }
+
+      organization.name = name || organization.name;
+      organization.theme = theme || organization.theme;
+
+      await organization.save();
+      res.json(organization);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+);
+
+// Get Organization Details (Protected)
+router.get("/organization", authMiddleware, async (req, res) => {
+  try {
+    const organization = await Organization.findById(req.organizationId);
+    if (!organization) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+    res.json(organization);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

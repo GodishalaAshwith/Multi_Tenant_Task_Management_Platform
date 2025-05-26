@@ -25,6 +25,11 @@ export const updateUserRole = (userId, role) =>
 export const removeUserFromOrg = (userId) =>
   API.delete(`/auth/users/${userId}`);
 
+// Organization settings endpoints
+export const updateOrganization = (orgData) =>
+  API.patch("/auth/organization", orgData);
+export const getOrganizationDetails = () => API.get("/auth/organization");
+
 // Task endpoints
 export const createTask = (taskData) => API.post("/tasks", taskData);
 export const getAllTasks = () => API.get("/tasks");
