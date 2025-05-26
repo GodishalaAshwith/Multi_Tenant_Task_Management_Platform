@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Tasks from "./pages/Tasks";
 import Navbar from "./components/Navbar";
 
 const PrivateRoute = ({ children }) => {
@@ -27,6 +28,14 @@ function App() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tasks"
+          element={
+            <PrivateRoute>
+              <Tasks />
             </PrivateRoute>
           }
         />

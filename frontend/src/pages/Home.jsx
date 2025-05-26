@@ -91,16 +91,16 @@ const Home = () => {
           {[
             {
               title: "Multi-Tenant Architecture",
-              desc: "Secure data isolation for each organization"
+              desc: "Secure data isolation for each organization",
             },
             {
               title: "Role-Based Access",
-              desc: "Admin, Manager, and Member role hierarchies"
+              desc: "Admin, Manager, and Member role hierarchies",
             },
             {
               title: "Team Management",
-              desc: "Invite and manage team members efficiently"
-            }
+              desc: "Invite and manage team members efficiently",
+            },
           ].map((feature, index) => (
             <div
               key={index}
@@ -112,9 +112,7 @@ const Home = () => {
               <h3 className="text-2xl font-semibold text-gray-900">
                 {feature.title}
               </h3>
-              <p className="text-gray-700 mt-3 text-lg">
-                {feature.desc}
-              </p>
+              <p className="text-gray-700 mt-3 text-lg">{feature.desc}</p>
             </div>
           ))}
         </div>

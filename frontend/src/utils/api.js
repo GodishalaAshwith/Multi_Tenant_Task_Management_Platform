@@ -24,3 +24,15 @@ export const updateUserRole = (userId, role) =>
   API.patch(`/auth/users/${userId}/role`, { role });
 export const removeUserFromOrg = (userId) =>
   API.delete(`/auth/users/${userId}`);
+
+// Task endpoints
+export const createTask = (taskData) => API.post("/tasks", taskData);
+export const getAllTasks = () => API.get("/tasks");
+export const getTaskById = (taskId) => API.get(`/tasks/${taskId}`);
+export const updateTask = (taskId, taskData) =>
+  API.patch(`/tasks/${taskId}`, taskData);
+export const deleteTask = (taskId) => API.delete(`/tasks/${taskId}`);
+export const getMyTasks = () => API.get("/tasks/my/tasks");
+export const getMyNotifications = () => API.get("/tasks/my/notifications");
+export const markNotificationsAsRead = (taskId) =>
+  API.patch(`/tasks/notifications/${taskId}`);

@@ -3,11 +3,16 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
+const taskRoutes = require("./routes/tasks");
+const initializeTaskExpiryJob = require("./utils/taskExpiryJob");
 
 dotenv.config(); // Load environment variables
 
 const app = express();
 connectDB(); // Connect to MongoDB
+
+// Initialize task expiry job
+initializeTaskExpiryJob();
 
 // Middleware
 app.use(cors({ origin: process.env.CLIENT_URL || "*" })); // Allow frontend to connect
@@ -15,6 +20,7 @@ app.use(express.json()); // Parse JSON body
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
 
 // Default route
 app.get("/", (req, res) => {
